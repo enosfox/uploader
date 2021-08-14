@@ -1,0 +1,32 @@
+{
+  "name": "kitsunecode/uploader",
+  "description": "It is a easy PHP upload manager for images, files and media in your application",
+  "keywords": [
+    "KitsuneCode",
+    "Kitsune",
+    "upload",
+    "image upload",
+    "file upload",
+    "media upload"
+  ],
+  "homepage": "https://www.kitsunews.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Enos S. S. Silva",
+      "email": "devenos@icloud.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.3",
+    "ext-gd": "*",
+    "ext-mbstring": "*",
+    "ext-exif": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "KitsuneCode\\Uploader\\": "src"
+    }
+  }
+}
