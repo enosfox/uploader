@@ -11,7 +11,7 @@
 
         if ($_FILES) {
             try {
-                $upload = $image->uploadWebp($_FILES['image'], $_POST['name']);
+                $upload = $image->uploadWebp($_FILES['image'], $_POST['name'],100,['webp'=>100]);
                 echo "<img src='{$upload}' width='100%'>";
             } catch (Exception $e) {
                 echo "<p>(!) {$e->getMessage()}</p>";
