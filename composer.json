@@ -19,7 +19,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=8.0",
     "ext-gd": "*",
     "ext-mbstring": "*",
     "ext-exif": "*"

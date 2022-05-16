@@ -24,7 +24,7 @@ KitsuneCode é um conjunto de pequenos e otimizados componentes PHP para tarefas
 Uploader is available via Composer:
 
 ```bash
-"kitsunecode/uploader": "1.0.*"
+"kitsunecode/uploader": "2.0.*"
 ```
 
 or run

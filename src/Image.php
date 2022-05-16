@@ -2,6 +2,8 @@
 
 namespace KitsuneCode\Uploader;
 
+use Exception;
+
 /**
  * Class KitsuneCode Image
  *
@@ -17,6 +19,7 @@ class Image extends Uploader
     protected static $allowTypes = [
         "image/jpeg",
         "image/png",
+        "image/webp",
         "image/gif",
     ];
 
@@ -26,16 +29,16 @@ class Image extends Uploader
      * @param int $width
      * @param array|null $quality
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function upload(array $image, string $name, int $width = 2000, ?array $quality = null): string
     {
         if (empty($image['type'])) {
-            throw new \Exception("Not a valid data from image");
+            throw new Exception("Not a valid data from image");
         }
 
         if (!$this->imageCreate($image)) {
-            throw new \Exception("Not a valid image type or extension");
+            throw new Exception("Not a valid image type or extension");
         } else {
             $this->name($name);
         }
@@ -68,6 +71,12 @@ class Image extends Uploader
         if ($image['type'] == "image/png") {
             $this->file = imagecreatefrompng($image['tmp_name']);
             $this->ext = "png";
+            return true;
+        }
+
+        if ($image['type'] == "image/webp") {
+            $this->file = imagecreatefromwebp($image['tmp_name']);
+            $this->ext = "webp";
             return true;
         }
 

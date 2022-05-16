@@ -11,22 +11,22 @@ namespace KitsuneCode\Uploader;
 abstract class Uploader
 {
     /** @var string */
-    protected $path;
+    protected string $path;
 
     /** @var resource */
     protected $file;
 
     /** @var string */
-    protected $name;
+    protected string $name;
 
     /** @var string */
-    protected $ext;
+    protected string $ext;
 
     /** @var array */
-    protected static $allowTypes = [];
+    protected static array $allowTypes = [];
 
     /** @var array */
-    protected static $extensions = [];
+    protected static array $extensions = [];
 
     /**
      * @param string $uploadDir
@@ -67,7 +67,7 @@ abstract class Uploader
      */
     protected function name(string $name): string
     {
-        $name = filter_var(mb_strtolower($name), FILTER_SANITIZE_STRIPPED);
+        $name = filter_var(mb_strtolower($name), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $formats = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª';
         $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                 ';
         $name = str_replace(["-----", "----", "---", "--"], "-",
