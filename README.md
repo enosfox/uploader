@@ -45,11 +45,30 @@ Para mais detalhes sobre como usar o upload, veja uma pasta de exemplo no diret√
 <?php
 require __DIR__ . "/../vendor/autoload.php";
 
-$image = new KitsuneCode\Uploader\Image("uploads", "images", 600);
+//$image = new KitsuneCode\Uploader\Image("uploads", "images", false); //WITHOUT YEAR AND MONTH FOLDERS //SEM PASTAS DE ANO E M√äS
+$image = new KitsuneCode\Uploader\Image("uploads", "images");
 
 if ($_FILES) {
     try {
         $upload = $image->upload($_FILES['image'], $_POST['name']);
+        echo "<img src='{$upload}' width='100%'>";
+    } catch (Exception $e) {
+        echo "<p>(!) {$e->getMessage()}</p>";
+    }
+}
+```
+
+#### Upload an Image Webp
+
+```php
+<?php
+require __DIR__ . "/../vendor/autoload.php";
+
+$image = new KitsuneCode\Uploader\Image("uploads", "images");
+
+if ($_FILES) {
+    try {
+        $upload = $image->uploadWebp($_FILES['image'], $_POST['name']);
         echo "<img src='{$upload}' width='100%'>";
     } catch (Exception $e) {
         echo "<p>(!) {$e->getMessage()}</p>";
