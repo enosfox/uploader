@@ -37,7 +37,7 @@ class Image extends Uploader
             throw new Exception("Not a valid data from image");
         }
 
-        if (!$this->imageCreateWebp($image)) {
+        if (!$this->imageCreate($image)) {
             throw new Exception("Not a valid image type or extension");
         }
 
@@ -48,43 +48,8 @@ class Image extends Uploader
             return "{$this->path}/{$this->name}";
         }
 
-        $this->imageGenerate($width, ($quality ?? ["jpg" => 75, "png" => 5, "webp" => 75]));
+        $this->imageGenerateWebp($width, ($quality ?? ["webp" => 75]));
         return "{$this->path}/{$this->name}";
-    }
-
-    /**
-     * Image create and valid extension from mime-type
-     * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#Image_types
-     *
-     * @param array $image
-     * @return bool
-     */
-    protected function imageCreateWebp(array $image): bool
-    {
-        if ($image['type'] == "image/jpeg") {
-            $this->file = imagecreatefromjpeg($image['tmp_name']);
-            $this->ext = "webp";
-            return true;
-        }
-
-        if ($image['type'] == "image/png") {
-            $this->file = imagecreatefrompng($image['tmp_name']);
-            $this->ext = "webp";
-            return true;
-        }
-
-        if ($image['type'] == "image/webp") {
-            $this->file = imagecreatefromwebp($image['tmp_name']);
-            $this->ext = "webp";
-            return true;
-        }
-
-        if ($image['type'] == "image/gif") {
-            $this->ext = "gif";
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -181,6 +146,27 @@ class Image extends Uploader
             imagecopyresampled($imageCreate, $this->file, 0, 0, 0, 0, $imageW, $imageH, $fileX, $fileY);
             imagewebp($imageCreate, "{$this->path}/{$this->name}", $quality['webp']);
         }
+
+        imagedestroy($this->file);
+        imagedestroy($imageCreate);
+    }
+
+    /**
+     * @param int $width
+     * @param array $quality
+     */
+    private function imageGenerateWebp(int $width, array $quality): void
+    {
+        $fileX = intval(imagesx($this->file));
+        $fileY = intval(imagesy($this->file));
+        $imageW = ($width < $fileX ? $width : $fileX);
+        $imageH = intval(($imageW * $fileY) / $fileX);
+        $imageCreate = imagecreatetruecolor($imageW, $imageH);
+
+        imagealphablending($imageCreate, false);
+        imagesavealpha($imageCreate, true);
+        imagecopyresampled($imageCreate, $this->file, 0, 0, 0, 0, $imageW, $imageH, $fileX, $fileY);
+        imagewebp($imageCreate, "{$this->path}/{$this->name}", $quality['webp']);
 
         imagedestroy($this->file);
         imagedestroy($imageCreate);
