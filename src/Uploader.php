@@ -69,9 +69,12 @@ abstract class Uploader
     {
         $name = filter_var(mb_strtolower($name), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $formats = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª';
-        $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                 ';
-        $name = str_replace(["-----", "----", "---", "--"], "-",
-            str_replace(" ", "-", trim(strtr(utf8_decode($name), utf8_decode($formats), $replace))));
+        $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyrr                                 ';
+        $name = str_replace(
+            ["-----", "----", "---", "--"],
+            "-",
+            str_replace(" ", "-", trim(strtr(utf8_decode($name), utf8_decode($formats), $replace)))
+        );
 
         $this->name = "{$name}." . $this->ext;
 
@@ -102,6 +105,14 @@ abstract class Uploader
         $this->dir("{$path}/{$yearPath}");
         $this->dir("{$path}/{$yearPath}/{$mothPath}");
         $this->path = "{$path}/{$yearPath}/{$mothPath}";
+    }
+
+    /**
+     * @param array $file
+     */
+    protected function ext(array $file): void
+    {
+        $this->ext = mb_strtolower(pathinfo($file['name'])['extension']);
     }
 
     /**

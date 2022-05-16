@@ -42,7 +42,7 @@ class Send extends Uploader
      */
     public function upload(array $file, string $name): string
     {
-        $this->ext = mb_strtolower(pathinfo($file['name'])['extension']);
+        $this->ext($file);
 
         if (!in_array($file['type'], static::$allowTypes) || !in_array($this->ext, static::$extensions)) {
             throw new Exception("Not a valid file type or extension");

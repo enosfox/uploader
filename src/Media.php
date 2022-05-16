@@ -17,35 +17,36 @@ class Media extends Uploader
      * @var array allowed media types
      * https://www.freeformatter.com/mime-types-list.html
      */
-    protected static $allowTypes = [
+    protected static array $allowTypes = [
         "audio/mp3",
         "audio/mpeg",
-        "audio/mp4",
         "video/mp4",
         "video/quicktime",
-        "video/webm"
+        "video/webm",
+        "audio/webm"
     ];
 
     /**
      * Allowed extensions to types.
      * @var array
      */
-    protected static $extensions = [
+    protected static array $extensions = [
         "mp3",
         "mp4",
         "mov",
-        "webm"
+        "webm",
+        "weba"
     ];
 
     /**
      * @param array $media
      * @param string $name
-     * @return null|string
+     * @return string
      * @throws Exception
      */
     public function upload(array $media, string $name): string
     {
-        $this->ext = mb_strtolower(pathinfo($media['name'])['extension']);
+        $this->ext($media);
 
         if (!in_array($media['type'], static::$allowTypes) || !in_array($this->ext, static::$extensions)) {
             throw new Exception("Not a valid media type or extension");
