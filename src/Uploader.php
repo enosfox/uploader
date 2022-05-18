@@ -32,9 +32,10 @@ abstract class Uploader
      * @param string $uploadDir
      * @param string $fileTypeDir
      * @param bool $monthYearPath
+     * @param string|bool $nameDir
      * @example $u = new Upload("storage/uploads", "images");
      */
-    public function __construct(string $uploadDir, string $fileTypeDir, bool $monthYearPath = true)
+    public function __construct(string $uploadDir, string $fileTypeDir, bool $monthYearPath = true, string|bool $nameDir = false)
     {
         $this->dir($uploadDir);
         $this->dir("{$uploadDir}/{$fileTypeDir}");
@@ -42,6 +43,10 @@ abstract class Uploader
 
         if ($monthYearPath) {
             $this->path("{$uploadDir}/{$fileTypeDir}");
+        }
+
+        if($nameDir){
+            $this->pathName("{$uploadDir}/{$fileTypeDir}", $nameDir);
         }
     }
 
@@ -85,6 +90,25 @@ abstract class Uploader
     }
 
     /**
+     * @param string $name
+     * @return string
+     */
+    protected function folder(string $name): string
+    {
+        $name = filter_var(mb_strtolower($name), FILTER_SANITIZE_SPECIAL_CHARS);
+        $formats = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª';
+        $replace = 'aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyrr                                 ';
+        $name = str_replace(
+            ["-----", "----", "---", "--"],
+            "-",
+            str_replace(" ", "-", trim(strtr(utf8_decode($name), utf8_decode($formats), $replace)))
+        );
+
+        $this->folder = $name;
+        return $this->folder;
+    }
+
+    /**
      * @param string $dir
      * @param int $mode
      */
@@ -105,6 +129,20 @@ abstract class Uploader
         $this->dir("{$path}/{$yearPath}");
         $this->dir("{$path}/{$yearPath}/{$mothPath}");
         $this->path = "{$path}/{$yearPath}/{$mothPath}";
+    }
+
+    /**
+     * @param string $path
+     */
+    protected function pathName(string $path, string $name): void
+    {
+        list($yearPath, $mothPath) = explode("/", date("Y/m"));
+        $this->folder($name);
+
+        $this->dir("{$path}/{$yearPath}");
+        $this->dir("{$path}/{$yearPath}/{$mothPath}");
+        $this->dir("{$path}/{$yearPath}/{$mothPath}/{$this->folder}");
+        $this->path = "{$path}/{$yearPath}/{$mothPath}/{$this->folder}";
     }
 
     /**

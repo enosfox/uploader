@@ -7,7 +7,7 @@
         require __DIR__ . "/../src/Image.php";
 
         //$image = new KitsuneCode\Uploader\Image("uploads", "images", false); //SEM PASTAS DE ANO E MÊS
-        $image = new KitsuneCode\Uploader\Image("uploads", "images");
+        $image = new KitsuneCode\Uploader\Image(uploadDir:"uploads", fileTypeDir:"images", nameDir:$_POST['name'] ?? '');
 
         if ($_FILES) {
             try {
