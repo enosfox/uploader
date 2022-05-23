@@ -32,10 +32,10 @@ abstract class Uploader
      * @param string $uploadDir
      * @param string $fileTypeDir
      * @param bool $monthYearPath
-     * @param string|bool $nameDir
+     * @param string|null $nameDir
      * @example $u = new Upload("storage/uploads", "images");
      */
-    public function __construct(string $uploadDir, string $fileTypeDir, bool $monthYearPath = true, string|bool $nameDir = false)
+    public function __construct(string $uploadDir, string $fileTypeDir, bool $monthYearPath = true, ?string $nameDir = NULL)
     {
         $this->dir($uploadDir);
         $this->dir("{$uploadDir}/{$fileTypeDir}");
@@ -45,7 +45,7 @@ abstract class Uploader
             $this->path("{$uploadDir}/{$fileTypeDir}");
         }
 
-        if($nameDir){
+        if($nameDir != NULL){
             $this->pathName("{$uploadDir}/{$fileTypeDir}", $nameDir);
         }
     }
