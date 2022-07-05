@@ -81,6 +81,8 @@ abstract class Uploader
             str_replace(" ", "-", trim(strtr(utf8_decode($name), utf8_decode($formats), $replace)))
         );
 
+        $name = iconv("UTF-8", "UTF-8//IGNORE", $name);
+
         $this->name = "{$name}." . $this->ext;
 
         if (file_exists("{$this->path}/{$this->name}") && is_file("{$this->path}/{$this->name}")) {
