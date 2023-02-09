@@ -20,6 +20,9 @@ abstract class Uploader
     protected string $name;
 
     /** @var string */
+    protected string $folder;
+
+    /** @var string */
     protected string $ext;
 
     /** @var array */
@@ -78,7 +81,7 @@ abstract class Uploader
         $name = str_replace(
             ["-----", "----", "---", "--"],
             "-",
-            str_replace(" ", "-", trim(strtr(utf8_decode($name), utf8_decode($formats), $replace)))
+            str_replace(" ", "-", trim(strtr(mb_convert_encoding($name, 'ISO-8859-1', 'UTF-8'), mb_convert_encoding($formats, 'ISO-8859-1', 'UTF-8'), $replace)))
         );
 
         $name = iconv("UTF-8", "UTF-8//IGNORE", $name);
@@ -103,7 +106,7 @@ abstract class Uploader
         $name = str_replace(
             ["-----", "----", "---", "--"],
             "-",
-            str_replace(" ", "-", trim(strtr(utf8_decode($name), utf8_decode($formats), $replace)))
+            str_replace(" ", "-", trim(strtr(mb_convert_encoding($name, 'ISO-8859-1', 'UTF-8'), mb_convert_encoding($formats, 'ISO-8859-1', 'UTF-8'), $replace)))
         );
 
         $this->folder = $name;
